@@ -1,6 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    //RICEVO NOME DEVICE CHE UTILIZZERO' PER COMPORRE LA MIA PAGINA WEB
+    $name= $_GET["name"];
+
+/////////////////////////////////////////////////////////////////////////
+
+//TENTATIVO DI IMPLEMENTAZIONE OBJECT ORIENTED
+class AS_Service
+{
+    public $as_name;
+    public $as_description;
+    public $as_image;
+    public $logo;
+    
+
+
+    public function __construct($name)
+    {
+
+//CONNECTION METHOD
+        $user = 'root';
+        $pwd = '';
+        //WARNING! OCCHIO AL DBNAME
+        $dbname = 'hma_tim';
+        $conn = new mysqli("localhost", $user, $pwd, $dbname);
+
+// CHECK CONNECTION
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } 
+
+
+//SELECT QUERY + WHERE
+        //WARNING! OCCHIO ALLA QUERY
+        $sql = "SELECT * FROM asservices WHERE as_name ='".$name."'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+
+//CHIUSURA DI CONNESSIONE
+        $conn -> close();
+
+//VARIABILI DELL'OGGETTO ASSEGNATE
+
+        $this -> as_name = $row["as_name"];
+        $this -> as_description = $row["as_description"];
+        $this -> as_image = $row["as_image"];
+        $this -> as_logo = $row["logo"];
+        
+    }
+}
+
+
+//ISTANZIAZIONE OGGETTO
+ $as1 = new AS_Service ($_GET["name"]);
+
+ 
+?>
+
+
+
 <head>
 
     <meta charset="utf-8">
@@ -11,7 +73,7 @@
     <meta name="author" content="Davide Donadio">
     <meta name="author" content="Filippo Pietà"> 
     
-    <title>Assistenza - Tutti gli AS</title>
+    <title>Assistenza - <?php echo $as1 -> as_name; ?></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../Style/bootstrap.css" rel="stylesheet">
@@ -141,119 +203,62 @@
         <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Assistenza - Tutti i Servizi
+                <h1 class="page-header">Assistenza - <?php echo $as1 -> as_name;?>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="Homepage.html">Home</a>
                     </li>
-                    <li class="active">All AS Services</li>
+                    <li><a href="AllASCategories.html">All AS Categories</a>
+                    </li>
+                    <li><a href="SmartLifeAS.html">SmartLife AS</a>
+                    </li>
+                    <li class="active"><?php echo $as1 -> as_name; ?></li>
                 </ol>
             </div>
         </div>
+        
+         <!-- /.row -->
+        <?php 
+        echo $as1 -> as_description;
+        ?>
+            <div class="col-lg-12">
+                <h4 class="page-header"></h4>
+            </div>
 
-           <!-- /.row -->
+            <div class="col-lg-6">
+                    <div class="media">
+                        <div class="pull-left">
+                            <a href="TimMusicASAssocProd.html">
+                                <img src="../Images/Progetti.png" height="50px" width="50px">
+                            </a>
+                        </div>
 
-    <div class="row">
-
-                <div class="col-lg-12">
-                    <h4 class="page-header">Lista Servizi</h3>
-                </div>
-
-                <div class="col-sm-3 col-xs-6">
-                   <center> <a href="ASSERVICE.php?name=timmusicas">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimMusicAS.png" alt="">
-                    </a>
-                    <p>Tim Music</p>
-                    </center>
-                </div>
-
-               <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimReadingAS.png" alt="">
-                    </a>
-                    <p>Tim Reading</p>
-                    </center>
-                </div>
-                
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimVisionAS.png" alt="">
-                    </a>
-                    <p>Tim Vision</p>
-                    </center>
-                </div>
-
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimGamesAS.png" alt="">
-                    </a>
-                    <p>Tim Games</p>
-                    </center>
-                </div>
+                        <div class="media-body">
+                            <h4 class="media-heading"><br>Scopri i Prodotti associati</h4>
+                            </div>
+                    </div>
+            </div>
+            
         </div>
     
-          
-        <!-- /.row -->
-
-    <div class="row">
-
-                
-                <div class="col-sm-3 col-xs-6">
-                   <center> <a href="FrodiInformatiche.html">
-                        <img class="img-responsive img-hover img-related" src="../Images/InternetSecAS.png" alt="">
-                    </a>
-                    <p>Internet Security</p>
-                    </center>
-                </div>
-
-               <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/CellConnectAS.png" alt="">
-                    </a>
-                    <p>Mobile Connect</p>
-                    </center>
-                </div>
-                
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/PayBillsAS.png" alt="">
-                    </a>
-                    <p>Pagamento</p>
-                    </center>
-                </div>
-
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/wrench.png" alt="">
-                    </a>
-                    <p>Supporto Tecnico</p>
-                    </center>
-                </div>
-
-            </div>
-    
-          <h1 class="page-header">
-                </h1>
-   
-        
 
         <!-- Footer -->
         <footer class="footer-distributed">
 
-            <div class="footer-right">
+			<div class="footer-right">
 
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-linkedin"></i></a>
+				<a href="#"><i class="fa fa-facebook"></i></a>
+				<a href="#"><i class="fa fa-twitter"></i></a>
+				<a href="#"><i class="fa fa-linkedin"></i></a>
 
-            </div>
+			</div>
 
-            <div class="footer-left">
-                <img class="logo" src="../Images/LogoTim.png">
-                <p>Telecom Italia Mobile &copy; 2015</p>
-            </div>
+			<div class="footer-left">
+				<img class="logo" src="../Images/LogoTim.png">
+				<p>Telecom Italia Mobile &copy; 2015</p>
+			</div>
 
-        </footer>
+		</footer>
     </div>
     <!-- /.container -->
 

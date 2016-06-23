@@ -1,6 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    //RICEVO NOME DEVICE CHE UTILIZZERO' PER COMPORRE LA MIA PAGINA WEB
+    $name= $_GET["name"];
+
+/////////////////////////////////////////////////////////////////////////
+
+//TENTATIVO DI IMPLEMENTAZIONE OBJECT ORIENTED
+class SL_Service
+{
+    public $sl_name;
+    public $sl_description;
+    public $sl_image1;
+    public $sl_image2;
+    public $sl_image3;
+    public $logo;
+    
+
+
+    public function __construct($name)
+    {
+
+//CONNECTION METHOD
+        $user = 'root';
+        $pwd = '';
+        //WARNING! OCCHIO AL DBNAME
+        $dbname = 'hma_tim';
+        $conn = new mysqli("localhost", $user, $pwd, $dbname);
+
+// CHECK CONNECTION
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } 
+
+
+//SELECT QUERY + WHERE
+        //WARNING! OCCHIO ALLA QUERY
+        $sql = "SELECT * FROM slservices WHERE sl_name ='".$name."'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+
+//CHIUSURA DI CONNESSIONE
+        $conn -> close();
+
+//VARIABILI DELL'OGGETTO ASSEGNATE
+
+    
+        $this -> sl_name = $row["sl_name"];
+        $this -> sl_description = $row["sl_description"];
+        $this -> sl_image1 = $row["sl_image1"];
+        $this -> sl_image2 = $row["sl_image2"];
+        $this -> sl_image3 = $row["sl_image3"];
+        $this -> sl_logo = $row["logo"];
+        
+
+
+    }
+}
+
+
+//ISTANZIAZIONE OGGETTO
+ $sl1 = new SL_Service ($_GET["name"]);
+
+ 
+?>
+
 <head>
 
     <meta charset="utf-8">
@@ -11,7 +78,7 @@
     <meta name="author" content="Davide Donadio">
     <meta name="author" content="Filippo Pietà"> 
     
-    <title>Assistenza - Tutti gli AS</title>
+    <title><?php echo $sl1 -> sl_name;?></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../Style/bootstrap.css" rel="stylesheet">
@@ -32,6 +99,8 @@
 </head>
 
 <body>
+
+
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
@@ -137,123 +206,130 @@
     <!-- Page Content -->
     <div class="container">
 
-
         <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Assistenza - Tutti i Servizi
+                <h1 class="page-header"><?php echo $sl1 -> sl_name;?>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="Homepage.html">Home</a>
                     </li>
-                    <li class="active">All AS Services</li>
+                    <li><a href="AllSLCategories.html">All SL Categories</a>
+                    </li>
+                    <li><a href="TvEntertainment.html">TV & Entertainment</a>
+                    </li>
+                    <li class="active"><?php echo $sl1 -> sl_name;?></li>
                 </ol>
             </div>
         </div>
-
-           <!-- /.row -->
-
-    <div class="row">
-
-                <div class="col-lg-12">
-                    <h4 class="page-header">Lista Servizi</h3>
-                </div>
-
-                <div class="col-sm-3 col-xs-6">
-                   <center> <a href="ASSERVICE.php?name=timmusicas">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimMusicAS.png" alt="">
-                    </a>
-                    <p>Tim Music</p>
-                    </center>
-                </div>
-
-               <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimReadingAS.png" alt="">
-                    </a>
-                    <p>Tim Reading</p>
-                    </center>
-                </div>
-                
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimVisionAS.png" alt="">
-                    </a>
-                    <p>Tim Vision</p>
-                    </center>
-                </div>
-
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/TimGamesAS.png" alt="">
-                    </a>
-                    <p>Tim Games</p>
-                    </center>
-                </div>
-        </div>
-    
-          
         <!-- /.row -->
 
-    <div class="row">
+        <!-- Portfolio Item Row -->
+        <div class="row">
 
+            <div class="col-md-8">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        <div class="item active" style="height: 450px; width: 750px;">
+                           <center> <img class="fill" src=<?php echo $sl1 -> sl_image1 ?>  alt="" style="max-height: 450px; max-width: 750px;">
+                        </center>
+                        </div>
+                        <div class="item" style="height: 450px; width: 750px;">
+                        <center>
+                            <img class="fill" src=<?php echo $sl1 -> sl_image2 ?> alt="" style="max-height: 450px; max-width: 750px;margin-top: 1%;">
+                        </center>
+                        </div>
+                        <div class="item" style="height: 450px; width: 750px;">
+                            <center>
+                            <img class="fill" src=<?php echo $sl1 -> sl_image3 ?>  alt="" style="max-height: 450px; max-width: 750px;margin-top: 10%;">
+                        </center>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                        <span class="glyphicon glyphicon-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                        <span class="glyphicon glyphicon-right"></span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+              <!--  <p> <br>Con TIMmusic puoi ascoltare musica in streaming senza limiti di tempo scegliendo da un vastissimo catalogo di milioni di brani musicali nazionali e internazionali di ogni genere, sempre aggiornato con le ultime uscite discografiche.
+
+                TIMmusic ti consente anche di creare e salvare le tue playlist personali o di ascoltare quelle suggerite da Dj e artisti famosi in esclusiva per te. Inoltre puoi scegliere tra tante playlist proposte per genere e per tema o create dinamicamente dalla piattaforma in base alla musica che stai ascoltando. </p>
+            -->
+                <?php echo $sl1 -> sl_description?>
+
+                <h1 class="page-header"></h1>
+
+                 <div class="media">
+                 <br>
+                    <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                            <a href="TIMMusicAR.html">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-paper-plane fa-stack-1x fa-inverse"></i>
+                            </a>
+                        </span> 
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">REGOLE DI ATTIVAZIONE</h4>
+                        <p>Scopri come ottenere questo servizio</p>
+                    </div>
                 
-                <div class="col-sm-3 col-xs-6">
-                   <center> <a href="FrodiInformatiche.html">
-                        <img class="img-responsive img-hover img-related" src="../Images/InternetSecAS.png" alt="">
-                    </a>
-                    <p>Internet Security</p>
-                    </center>
+                </div>
+     
+                <div class="media">
+                    <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                            <a href="TIMMusicSuppDev.html">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-mobile fa-stack-1x fa-inverse"></i>
+                            </a>
+                        </span> 
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">DEVICES ASSOCIATI</h4>
+                        <p>Scopri i Devices associati a questo servizio</p>
+                    </div>
                 </div>
 
-               <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/CellConnectAS.png" alt="">
-                    </a>
-                    <p>Mobile Connect</p>
-                    </center>
-                </div>
-                
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/PayBillsAS.png" alt="">
-                    </a>
-                    <p>Pagamento</p>
-                    </center>
-                </div>
-
-                 <div class="col-sm-3 col-xs-6">
-                   <center> <a href="#">
-                        <img class="img-responsive img-hover img-related" src="../Images/wrench.png" alt="">
-                    </a>
-                    <p>Supporto Tecnico</p>
-                    </center>
-                </div>
 
             </div>
-    
-          <h1 class="page-header">
-                </h1>
-   
-        
+
+        </div>
+
+        <hr>
+
 
         <!-- Footer -->
         <footer class="footer-distributed">
 
-            <div class="footer-right">
+			<div class="footer-right">
 
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-linkedin"></i></a>
+				<a href="#"><i class="fa fa-facebook"></i></a>
+				<a href="#"><i class="fa fa-twitter"></i></a>
+				<a href="#"><i class="fa fa-linkedin"></i></a>
 
-            </div>
+			</div>
 
-            <div class="footer-left">
-                <img class="logo" src="../Images/LogoTim.png">
-                <p>Telecom Italia Mobile &copy; 2015</p>
-            </div>
+			<div class="footer-left">
+				<img class="logo" src="../Images/LogoTim.png">
+				<p>Telecom Italia Mobile &copy; 2015</p>
+			</div>
 
-        </footer>
+		</footer>
     </div>
     <!-- /.container -->
 
@@ -273,3 +349,5 @@
 </body>
 
 </html>
+
+
