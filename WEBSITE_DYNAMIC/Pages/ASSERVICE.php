@@ -23,10 +23,10 @@ class AS_Service
     {
 
 //CONNECTION METHOD
-        $user = 'root';
+        $user = 'affaticatidonadiopieta';
         $pwd = '';
         //WARNING! OCCHIO AL DBNAME
-        $dbname = 'hma_tim';
+        $dbname = 'my_affaticatidonadiopieta';
         $conn = new mysqli("localhost", $user, $pwd, $dbname);
 
 // CHECK CONNECTION
@@ -228,7 +228,7 @@ class AS_Service
             <div class="col-lg-6">
                     <div class="media">
                         <div class="pull-left">
-                            <a href="TimMusicASAssocProd.html">
+                            <a href="./TimMusicAsAssocProd.html">
                                 <img src="../Images/Progetti.png" height="50px" width="50px">
                             </a>
                         </div>

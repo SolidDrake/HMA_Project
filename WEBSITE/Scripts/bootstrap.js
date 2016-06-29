@@ -2368,3 +2368,9 @@ $('ul.nav li.dropdown').hover(function() {
 }, function() {
   $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeOut(300);
 });
+
+
+$(document).bind("mobileinit", function () {
+					$.support.cors = true;
+					$.mobile.allowCrossDomainPages = true;
+				});

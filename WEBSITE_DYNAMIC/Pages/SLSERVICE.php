@@ -25,11 +25,12 @@ class SL_Service
     {
 
 //CONNECTION METHOD
-        $user = 'root';
+        $user = 'affaticatidonadiopieta';
         $pwd = '';
         //WARNING! OCCHIO AL DBNAME
-        $dbname = 'hma_tim';
+        $dbname = 'my_affaticatidonadiopieta';
         $conn = new mysqli("localhost", $user, $pwd, $dbname);
+
 
 // CHECK CONNECTION
         if ($conn->connect_error) {
